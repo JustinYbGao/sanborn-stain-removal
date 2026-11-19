@@ -2,13 +2,18 @@
 
 Automatic color correction for scanned Sanborn fire insurance maps. The tool reduces broad yellow-brown discoloration, warm fringes near dark lines, and small residual brown spots. It estimates each page’s paper color and applies fixed image-processing rules.
 
-**[View the illustrated method and five whole-map comparisons](https://justinybgao.github.io/sanborn-stain-removal/)**
-
 The browser tool runs locally. Choose an image, select **Remove stains**, compare the original with the cleaned image, and download the full-resolution RGB PNG.
 
 ## Run the tool
 
-Python 3.11 or newer is required. From a downloaded or cloned copy of this repository, create an environment and install the package.
+Python 3.11 or newer is required. Download the repository using **Code → Download ZIP** and open a terminal in the extracted folder, or clone it with Git:
+
+```sh
+git clone https://github.com/JustinYbGao/sanborn-stain-removal.git
+cd sanborn-stain-removal
+```
+
+Then create an environment, install the package, and start the tool.
 
 macOS or Linux:
 
@@ -23,12 +28,13 @@ Windows PowerShell:
 
 ```powershell
 py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install .
-python -m sanborn_stain --serve
+.\.venv\Scripts\python.exe -m pip install .
+.\.venv\Scripts\python.exe -m sanborn_stain --serve
 ```
 
-Open **http://127.0.0.1:8792/** in a browser. If the port is occupied, use `--port 8795`.
+For the command-line and validation examples below, use `.\.venv\Scripts\python.exe` in place of `python` on Windows.
+
+Open **http://127.0.0.1:8792/** in a browser. Keep the terminal running while using the tool. If the port is occupied, add `--port 8795` to the launch command and open that port instead. Press **Ctrl+C** in the terminal to stop the server.
 
 The app accepts 8-bit RGB TIFF, JP2, PNG, or JPEG images up to 256 MiB and 80 million pixels. Processing takes place on your computer. The download retains the source raster dimensions. The page uses smaller previews for display.
 
@@ -61,7 +67,7 @@ The method was developed through inspection of map failures. The yellow correcti
 
 Development records include 37 distinct successfully processed scans across earlier versions. The spot-correction experiment covered nine scans.
 
-On 12 selected San Francisco Sheet 6 development locations, 10 spots decreased in contrast by at least 2 CIE76 color-distance units. Twenty-four sampled print footprints on five other sheets retained their original RGB values. These are targeted checks with selected regions and approximate paper references. The five-map page includes residual staining and gray specks that remain visible.
+On 12 selected San Francisco Sheet 6 development locations, 10 spots decreased in contrast by at least 2 CIE76 color-distance units. Twenty-four sampled print footprints on five other sheets retained their original RGB values. These are targeted checks with selected regions and approximate paper references.
 
 Dense stains near bindings, deep marks, some gray spots, and discoloration touching ink can remain. Pale printed areas close to the paper color require review. Downstream building-detection improvements have not been established for the current version.
 
@@ -71,10 +77,10 @@ Dense stains near bindings, deep marks, some gray spots, and discoloration touch
 python -m unittest discover -s tests -v
 ```
 
-The packaged method is derived from the local experimental implementation. [Provenance](PROVENANCE.json) records the source hashes and packaging changes. The HTML page includes its images and can also be opened directly from `docs/index.html`.
+The packaged method is derived from the local experimental implementation. [Provenance](PROVENANCE.json) records the source hashes and packaging changes.
 
 ## Map sources
 
-Example scans are from the Library of Congress, Geography and Map Division, Sanborn Maps Collection. The comparison page uses San Francisco 1899 sheets 4, 6 and 7, Sacramento 1895 sheet 10 left, and Savannah 1898 sheet 12.
+The development scans are from the Library of Congress, Geography and Map Division, Sanborn Maps Collection.
 
 The coworker’s [building labeling project](https://github.com/Arshgsgsy/building_segment) supplies the separate candidate-generation and labeling workflow. The cleaned RGB output can be passed to a later map-processing stage.
