@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sanborn Stain Removal</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Sanborn Stain Removal</h1>
+    <form id="upload">
+      <div class="file">
+        <label for="source">Map image</label>
+        <input type="file" id="source" accept=".tif,.tiff,.jp2,.png,.jpg,.jpeg" required aria-describedby="formats">
+        <p id="formats">8-bit RGB TIFF, JP2, PNG, or JPEG · up to 256 MiB and 80 megapixels</p>
+      </div>
+      <button id="run" disabled>Remove stains</button>
+    </form>
+    <p id="status" role="status"></p>
+    <section id="result" aria-label="Before and after" hidden>
+      <div class="comparison">
+        <figure>
+          <figcaption>Original</figcaption>
+          <img id="original" alt="Original map">
+        </figure>
+        <figure>
+          <figcaption>Cleaned</figcaption>
+          <img id="cleaned" alt="Map after stain removal">
+        </figure>
+      </div>
+      <a class="download" id="download" download>Download cleaned PNG</a>
+    </section>
+  </main>
+</body>
+</html>

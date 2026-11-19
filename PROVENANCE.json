@@ -1,0 +1,51 @@
+{
+  "algorithm": "paper-correction-with-isolated-spot-recovery-v5",
+  "algorithm_modules": [
+    {
+      "source": "experiments/rgb_stain_preprocess_20261110/restore.py",
+      "source_sha256": "9e93daa385767bbc58326dfe519ee18c3e74349c582afbde7e2bf919240badf5",
+      "published_module": "sanborn_stain/paper.py",
+      "published_sha256": "9e93daa385767bbc58326dfe519ee18c3e74349c582afbde7e2bf919240badf5",
+      "change": "Package-relative import substitutions only"
+    },
+    {
+      "source": "experiments/rgb_stain_chroma_20261110/method.py",
+      "source_sha256": "cd0de1eda437e845077599a106de4643889c3ac58392b994a87ecb1a9a47d469",
+      "published_module": "sanborn_stain/chroma.py",
+      "published_sha256": "321841ece2784036c2d111d8b2090230cb7f9f9cbd97330edcac24e9539a0f97",
+      "change": "Package-relative import substitutions only"
+    },
+    {
+      "source": "experiments/rgb_stain_line_paper_20261111/method.py",
+      "source_sha256": "a58c62988c8a9cb7ca8fb68167a30d8fd7adb6dfdc4d5a049f1e9a4978cacd1e",
+      "published_module": "sanborn_stain/lines.py",
+      "published_sha256": "95c1d19c22a3d70e06f53b9d266053aff33193631170e5d929fc591c002e9ea1",
+      "change": "Package-relative import substitutions only"
+    },
+    {
+      "source": "experiments/rgb_stain_spots_20261111/method.py",
+      "source_sha256": "ad71382aa848305ce74bcc0fd992be23d4ef67e76b512874a427112fdb142314",
+      "published_module": "sanborn_stain/spots.py",
+      "published_sha256": "71c8fcb2f2de4d5612afe2f93df8e04fb981cf746ee06e121397cc033e0f85e7",
+      "change": "Package-relative import substitutions only"
+    }
+  ],
+  "packaging": "Standalone Python package with local web UI and command-line export. Numerical algorithm copied with relative imports.",
+  "reference_validation": {
+    "sheet": "sanborn00813_008_0006",
+    "source_sha256": "be667969420fda6d0d44c08fc1693717829e6722654fd9ce2a12ded9e0c20058",
+    "native_dimensions": [
+      5805,
+      8268
+    ],
+    "rgb_sha256": "b11b0e2624aa11cea553e957fbf1b13bad677a81f724fc1f65789d6e0f056321",
+    "packaged_output_matches_reference": true,
+    "mask_matches_rgb_changes": true
+  },
+  "validation_environment": {
+    "python": "3.14.6",
+    "numpy": "2.5.2",
+    "opencv": "5.0.0",
+    "pillow": "12.2.0"
+  }
+}

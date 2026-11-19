@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sanborn-stain-removal"
+version = "0.1.0"
+description = "Automatic paper stain correction for scanned Sanborn maps"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26,<3",
+    "opencv-python-headless>=4.9,<6",
+    "Pillow>=10,<13",
+]
+
+[project.scripts]
+sanborn-stain = "sanborn_stain.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["sanborn_stain*"]
+
+[tool.setuptools.package-data]
+sanborn_stain = ["*.html", "*.js", "*.css"]
