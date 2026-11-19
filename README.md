@@ -6,7 +6,7 @@ The browser tool runs locally. Choose an image, select **Remove stains**, compar
 
 ## Run the tool
 
-Python 3.11 or newer is required. Download the repository using **Code → Download ZIP** and open a terminal in the extracted folder, or clone it with Git:
+Python 3.12 or newer is required. Download the repository using **Code → Download ZIP** and open a terminal in the extracted folder, or clone it with Git:
 
 ```sh
 git clone https://github.com/JustinYbGao/sanborn-stain-removal.git
@@ -37,6 +37,8 @@ For the command-line and validation examples below, use `.\.venv\Scripts\python.
 Open **http://127.0.0.1:8792/** in a browser. Keep the terminal running while using the tool. If the port is occupied, add `--port 8795` to the launch command and open that port instead. Press **Ctrl+C** in the terminal to stop the server.
 
 The app accepts 8-bit RGB TIFF, JP2, PNG, or JPEG images up to 256 MiB and 80 million pixels. Processing takes place on your computer. The download retains the source raster dimensions. The page uses smaller previews for display.
+
+The installation uses the exact NumPy, OpenCV, and Pillow versions validated against the reference output.
 
 ## Process an image from the command line
 

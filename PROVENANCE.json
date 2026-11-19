@@ -47,5 +47,22 @@
     "numpy": "2.5.2",
     "opencv": "5.0.0",
     "pillow": "12.2.0"
+  },
+  "fresh_install_validation": {
+    "platform": "macOS arm64",
+    "python": "3.12.13",
+    "dependencies": {
+      "opencv": "5.0.0",
+      "numpy": "2.5.2",
+      "pillow": "12.2.0"
+    },
+    "unit_tests_passed": 20,
+    "native_dimensions": [
+      5805,
+      8268
+    ],
+    "cli_and_http_rgb_identical": true,
+    "rgb_matches_reference": true,
+    "rgb_sha256": "b11b0e2624aa11cea553e957fbf1b13bad677a81f724fc1f65789d6e0f056321"
   }
 }
