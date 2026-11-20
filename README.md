@@ -4,6 +4,14 @@ Automatic color correction for scanned Sanborn fire insurance maps. The tool red
 
 The browser tool runs locally. Choose an image, select **Remove stains**, compare the original with the cleaned image, and download the full-resolution RGB PNG.
 
+**San Francisco, 1899 · Sheet 6**
+
+| Original | Cleaned |
+| --- | --- |
+| ![Original San Francisco Sheet 6](docs/images/sf6-preview-original.webp) | ![San Francisco Sheet 6 after cleanup](docs/images/sf6-preview-cleaned.webp) |
+
+[See all map comparisons](#map-comparisons)
+
 ## Run the tool
 
 Python 3.12 or newer is required. Download the repository using **Code → Download ZIP** and open a terminal in the extracted folder, or clone it with Git:
@@ -64,6 +72,68 @@ python -m PIL
 6. Save a full-resolution RGB PNG.
 
 The method was developed through inspection of map failures. The yellow correction followed residual yellowing on Sacramento. The line pass addressed fringes in San Francisco. The spot pass addressed isolated brown residues on San Francisco Sheet 6.
+
+## Map comparisons
+
+### San Francisco, 1899 · Sheet 6
+
+Look for brown spots near the sheet number and the wharf. Dark staining remains along the bottom edge.
+
+| Original | Current cleanup |
+| --- | --- |
+| ![San Francisco, 1899 · Sheet 6, original](docs/images/sf6-original.webp) | ![San Francisco, 1899 · Sheet 6, current cleanup](docs/images/sf6-cleaned.webp) |
+
+### Sacramento, 1895 · Sheet 10, left half
+
+The broad yellow-brown cast across the street fades. Darker marks remain in several places.
+
+| Original | Current cleanup |
+| --- | --- |
+| ![Sacramento, 1895 · Sheet 10, left half, original](docs/images/sacramento-10-left-original.webp) | ![Sacramento, 1895 · Sheet 10, left half, current cleanup](docs/images/sacramento-10-left-cleaned.webp) |
+
+### San Francisco, 1899 · Sheet 7
+
+The paper around the Palace Hotel is lighter, with less yellow along the diagonal ink lines.
+
+| Original | Current cleanup |
+| --- | --- |
+| ![San Francisco, 1899 · Sheet 7, original](docs/images/sf7-original.webp) | ![San Francisco, 1899 · Sheet 7, current cleanup](docs/images/sf7-cleaned.webp) |
+
+### San Francisco, 1899 · Sheet 4
+
+The large brown stain across Fishermen’s Wharf becomes lighter. Some smaller marks remain visible.
+
+| Original | Current cleanup |
+| --- | --- |
+| ![San Francisco, 1899 · Sheet 4, original](docs/images/sf4-original.webp) | ![San Francisco, 1899 · Sheet 4, current cleanup](docs/images/sf4-cleaned.webp) |
+
+### Savannah, 1898 · Sheet 12
+
+This scan shows the method’s limits. Several gray spots near the right edge remain visible after cleanup.
+
+| Original | Current cleanup |
+| --- | --- |
+| ![Savannah, 1898 · Sheet 12, original](docs/images/savannah-12-original.webp) | ![Savannah, 1898 · Sheet 12, current cleanup](docs/images/savannah-12-cleaned.webp) |
+
+## San Francisco Sheet 6 details
+
+These crops show what changed when spot correction was added. The left image in each pair shows the previous cleanup.
+
+### Near the sheet number
+
+Several isolated brown spots fade around the sheet number and the right margin.
+
+| Before spot correction | Current cleanup |
+| --- | --- |
+| ![Near the sheet number, before spot correction](docs/images/sf6-sheet-number-before-spot-correction.webp) | ![Near the sheet number, current cleanup](docs/images/sf6-sheet-number-cleaned.webp) |
+
+### Near the wharf
+
+Some isolated spots fade. Dark clusters along the binding edge remain.
+
+| Before spot correction | Current cleanup |
+| --- | --- |
+| ![Near the wharf, before spot correction](docs/images/sf6-wharf-before-spot-correction.webp) | ![Near the wharf, current cleanup](docs/images/sf6-wharf-cleaned.webp) |
 
 ## Evidence and current limits
 
