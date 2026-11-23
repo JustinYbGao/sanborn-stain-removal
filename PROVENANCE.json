@@ -1,5 +1,5 @@
 {
-  "algorithm": "paper-correction-with-isolated-spot-recovery-v5",
+  "algorithm": "paper-correction-with-dark-spot-repair-v6",
   "algorithm_modules": [
     {
       "source": "experiments/rgb_stain_preprocess_20261110/restore.py",
@@ -28,41 +28,92 @@
       "published_module": "sanborn_stain/spots.py",
       "published_sha256": "71c8fcb2f2de4d5612afe2f93df8e04fb981cf746ee06e121397cc033e0f85e7",
       "change": "Package-relative import substitutions only"
+    },
+    {
+      "source": "experiments/soft_blotches_c_20261123/repair.py",
+      "source_sha256": "fb091c9eba8e40b236e12bf33ab9384095aa8c5725d3ec9a10d1497cc6a4cc86",
+      "published_module": "sanborn_stain/dark_spots.py",
+      "published_sha256": "24f98e1ac3a1e9d08ac7ee86f7d75bb3a1d6179fcf70d964fce7e17f82634614",
+      "change": "Packaged the frozen numerical rules and added the public RGB entry point with final changed and review masks."
+    },
+    {
+      "source": "experiments/soft_blotches_c_20261123/local_guard.py",
+      "source_sha256": "fa0db07e6814acb7ef9c51c343f65f8a99bd75f82094b1cb1f1c5a2fcc6aa517",
+      "published_module": "sanborn_stain/local_guard.py",
+      "published_sha256": "0d7a8af144209d24dc3e50fed2f26a8c0f9f8073678b87b27e76f2d4042d5f21",
+      "change": "Formatting and package-relative ring check import."
+    },
+    {
+      "source": "experiments/soft_blotches_c_20261123/ring_check.py",
+      "source_sha256": "e5008a54f9cedeeeb0ab604dea3c6eb7fb4a5970a26bd501505807ef3f0fe214",
+      "published_module": "sanborn_stain/ring_check.py",
+      "published_sha256": "9711eeb65df75314daf831cefec5ced652ffd4db249dd79779311fa5fe4631b5",
+      "change": "Formatting only."
     }
   ],
-  "packaging": "Standalone Python package with local web UI and command-line export. Numerical algorithm copied with relative imports.",
-  "reference_validation": {
-    "sheet": "sanborn00813_008_0006",
-    "source_sha256": "be667969420fda6d0d44c08fc1693717829e6722654fd9ce2a12ded9e0c20058",
-    "native_dimensions": [
-      5805,
-      8268
-    ],
-    "rgb_sha256": "b11b0e2624aa11cea553e957fbf1b13bad677a81f724fc1f65789d6e0f056321",
-    "packaged_output_matches_reference": true,
-    "mask_matches_rgb_changes": true
-  },
+  "packaging": "Python package 0.2.0. The API, local web server and CLI use the same v6 RGB entry point.",
   "validation_environment": {
     "python": "3.14.6",
     "numpy": "2.5.2",
     "opencv": "5.0.0",
     "pillow": "12.2.0"
   },
-  "fresh_install_validation": {
-    "platform": "macOS arm64",
-    "python": "3.12.13",
-    "dependencies": {
-      "opencv": "5.0.0",
-      "numpy": "2.5.2",
-      "pillow": "12.2.0"
+  "prior_v5_validation": {
+    "reference_validation": {
+      "sheet": "sanborn00813_008_0006",
+      "source_sha256": "be667969420fda6d0d44c08fc1693717829e6722654fd9ce2a12ded9e0c20058",
+      "native_dimensions": [
+        5805,
+        8268
+      ],
+      "rgb_sha256": "b11b0e2624aa11cea553e957fbf1b13bad677a81f724fc1f65789d6e0f056321",
+      "packaged_output_matches_reference": true,
+      "mask_matches_rgb_changes": true
     },
-    "unit_tests_passed": 20,
+    "fresh_install_validation": {
+      "platform": "macOS arm64",
+      "python": "3.12.13",
+      "dependencies": {
+        "opencv": "5.0.0",
+        "numpy": "2.5.2",
+        "pillow": "12.2.0"
+      },
+      "unit_tests_passed": 20,
+      "native_dimensions": [
+        5805,
+        8268
+      ],
+      "cli_and_http_rgb_identical": true,
+      "rgb_matches_reference": true,
+      "rgb_sha256": "b11b0e2624aa11cea553e957fbf1b13bad677a81f724fc1f65789d6e0f056321"
+    }
+  },
+  "reference_validation": {
+    "sheet": "Omaha-0166",
+    "algorithm": "paper-correction-with-dark-spot-repair-v6",
     "native_dimensions": [
-      5805,
-      8268
+      3299,
+      3898
     ],
-    "cli_and_http_rgb_identical": true,
-    "rgb_matches_reference": true,
-    "rgb_sha256": "b11b0e2624aa11cea553e957fbf1b13bad677a81f724fc1f65789d6e0f056321"
+    "source_sha256": "7703c5031e64a4f99cc6d49054f08727418188936510194c248625d7404710ac",
+    "rgb_sha256": "9bcae4b3b291d45b46bf904d7084c037b65c6c3aa1d86e2da7cc74b9658cec00",
+    "cli_matches_reference": true,
+    "http_matches_reference": true,
+    "cli_implementation_sha256": {
+      "paper": "9e93daa385767bbc58326dfe519ee18c3e74349c582afbde7e2bf919240badf5",
+      "chroma": "321841ece2784036c2d111d8b2090230cb7f9f9cbd97330edcac24e9539a0f97",
+      "lines": "95c1d19c22a3d70e06f53b9d266053aff33193631170e5d929fc591c002e9ea1",
+      "spots": "71c8fcb2f2de4d5612afe2f93df8e04fb981cf746ee06e121397cc033e0f85e7",
+      "dark_spots": "24f98e1ac3a1e9d08ac7ee86f7d75bb3a1d6179fcf70d964fce7e17f82634614",
+      "local_guard": "0d7a8af144209d24dc3e50fed2f26a8c0f9f8073678b87b27e76f2d4042d5f21",
+      "ring_check": "9711eeb65df75314daf831cefec5ced652ffd4db249dd79779311fa5fe4631b5"
+    },
+    "source_set_counts": {
+      "historic": 67,
+      "shared25": 25,
+      "fresh": 2
+    },
+    "full_resolution_rgb_pairs_matched": 94,
+    "changed_and_review_masks_checked_on": 94
   }
 }

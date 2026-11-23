@@ -6,7 +6,7 @@ import shutil
 
 from PIL import Image
 
-from . import chroma, lines, paper, spots
+from . import chroma, dark_spots, lines, local_guard, paper, ring_check, spots
 
 
 def restore_file(source, destination):
@@ -17,10 +17,11 @@ def restore_file(source, destination):
         raise FileExistsError(f'Choose a new output directory: {destination}')
     source_hash = paper.sha256(source)
     rgb, source_metadata = paper.read_rgb8(source)
-    corrected, changed, review, diagnostics = spots.restore_rgb(rgb)
+    corrected, changed, review, diagnostics = dark_spots.restore_rgb(rgb)
     implementation_hashes = {
         name: paper.sha256(Path(module.__file__))
-        for name, module in (('paper', paper), ('chroma', chroma), ('lines', lines), ('spots', spots))
+        for name, module in (('paper', paper), ('chroma', chroma), ('lines', lines), ('spots', spots),
+                             ('dark_spots', dark_spots), ('local_guard', local_guard), ('ring_check', ring_check))
     }
     destination.mkdir(parents=True, exist_ok=False)
     try:
@@ -31,7 +32,7 @@ def restore_file(source, destination):
         for name, mask in (('changed', changed), ('review', review)):
             Image.fromarray(mask).save(audit / f'{name}.png')
         metadata = {
-            'algorithm': spots.VERSION,
+            'algorithm': dark_spots.VERSION,
             'implementation_sha256': implementation_hashes,
             'source': source.name,
             'source_sha256': source_hash,

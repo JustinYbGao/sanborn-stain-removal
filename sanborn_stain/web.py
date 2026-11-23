@@ -13,7 +13,7 @@ from uuid import uuid4
 import cv2
 from PIL import Image, UnidentifiedImageError
 
-from .spots import restore_rgb
+from .dark_spots import restore_rgb
 from .paper import read_rgb8
 
 HERE = Path(__file__).resolve().parent

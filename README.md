@@ -1,10 +1,14 @@
 # Sanborn Stain Removal
 
-Automatic color correction for scanned Sanborn fire insurance maps. The tool reduces broad yellow-brown discoloration, warm fringes near dark lines, and small residual brown spots. It estimates each page’s paper color and applies fixed image-processing rules.
+Automatic color correction for scanned Sanborn fire insurance maps. The tool reduces broad yellow-brown discoloration, warm fringes near dark lines, and small residual brown spots. Version 0.2.0 also repairs dark spots introduced when the surrounding paper receives more correction than the center.
 
 The browser tool runs locally. Choose an image, select **Remove stains**, compare the original with the cleaned image, and download the full-resolution RGB PNG.
 
-**San Francisco, 1899 · Sheet 6**
+**Atlanta, 1892 · Sheet 6 · dark-spot repair**
+
+![Atlanta sheet 6, original scan, v5 and v6](docs/images/atlanta-dark-spot-repair.webp)
+
+**San Francisco, 1899 · Sheet 6 · archived v5 comparison**
 
 | Original | Cleaned |
 | --- | --- |
@@ -69,51 +73,54 @@ python -m PIL
 3. Compensate for yellow color left after brightening, using the estimated paper’s blue-to-green ratio.
 4. Extend correction toward dark lines where nearby paper supports it and the original colors match.
 5. Find compact dark, warm residuals surrounded by similar corrected paper. Blend a local correction away from dark ink.
-6. Save a full-resolution RGB PNG.
+6. Look for local gaps in the correction on similar paper. Extend the neighboring RGB adjustment, protect sharp ink edges, and reduce or undo edits that introduce excess bright or dark contrast.
+7. Save a full-resolution RGB PNG.
 
 The method was developed through inspection of map failures. The yellow correction followed residual yellowing on Sacramento. The line pass addressed fringes in San Francisco. The spot pass addressed isolated brown residues on San Francisco Sheet 6.
 
 ## Map comparisons
 
+These five examples document the earlier v5 cleanup.
+
 ### San Francisco, 1899 · Sheet 6
 
 Look for brown spots near the sheet number and the wharf. Dark staining remains along the bottom edge.
 
-| Original | Current cleanup |
+| Original | v5 cleanup |
 | --- | --- |
-| ![San Francisco, 1899 · Sheet 6, original](docs/images/sf6-original.webp) | ![San Francisco, 1899 · Sheet 6, current cleanup](docs/images/sf6-cleaned.webp) |
+| ![San Francisco, 1899 · Sheet 6, original](docs/images/sf6-original.webp) | ![San Francisco, 1899 · Sheet 6, v5 cleanup](docs/images/sf6-cleaned.webp) |
 
 ### Sacramento, 1895 · Sheet 10, left half
 
 The broad yellow-brown cast across the street fades. Darker marks remain in several places.
 
-| Original | Current cleanup |
+| Original | v5 cleanup |
 | --- | --- |
-| ![Sacramento, 1895 · Sheet 10, left half, original](docs/images/sacramento-10-left-original.webp) | ![Sacramento, 1895 · Sheet 10, left half, current cleanup](docs/images/sacramento-10-left-cleaned.webp) |
+| ![Sacramento, 1895 · Sheet 10, left half, original](docs/images/sacramento-10-left-original.webp) | ![Sacramento, 1895 · Sheet 10, left half, v5 cleanup](docs/images/sacramento-10-left-cleaned.webp) |
 
 ### San Francisco, 1899 · Sheet 7
 
 The paper around the Palace Hotel is lighter, with less yellow along the diagonal ink lines.
 
-| Original | Current cleanup |
+| Original | v5 cleanup |
 | --- | --- |
-| ![San Francisco, 1899 · Sheet 7, original](docs/images/sf7-original.webp) | ![San Francisco, 1899 · Sheet 7, current cleanup](docs/images/sf7-cleaned.webp) |
+| ![San Francisco, 1899 · Sheet 7, original](docs/images/sf7-original.webp) | ![San Francisco, 1899 · Sheet 7, v5 cleanup](docs/images/sf7-cleaned.webp) |
 
 ### San Francisco, 1899 · Sheet 4
 
 The large brown stain across Fishermen’s Wharf becomes lighter. Some smaller marks remain visible.
 
-| Original | Current cleanup |
+| Original | v5 cleanup |
 | --- | --- |
-| ![San Francisco, 1899 · Sheet 4, original](docs/images/sf4-original.webp) | ![San Francisco, 1899 · Sheet 4, current cleanup](docs/images/sf4-cleaned.webp) |
+| ![San Francisco, 1899 · Sheet 4, original](docs/images/sf4-original.webp) | ![San Francisco, 1899 · Sheet 4, v5 cleanup](docs/images/sf4-cleaned.webp) |
 
 ### Savannah, 1898 · Sheet 12
 
 This scan shows the method’s limits. Several gray spots near the right edge remain visible after cleanup.
 
-| Original | Current cleanup |
+| Original | v5 cleanup |
 | --- | --- |
-| ![Savannah, 1898 · Sheet 12, original](docs/images/savannah-12-original.webp) | ![Savannah, 1898 · Sheet 12, current cleanup](docs/images/savannah-12-cleaned.webp) |
+| ![Savannah, 1898 · Sheet 12, original](docs/images/savannah-12-original.webp) | ![Savannah, 1898 · Sheet 12, v5 cleanup](docs/images/savannah-12-cleaned.webp) |
 
 ## San Francisco Sheet 6 details
 
@@ -123,19 +130,21 @@ These crops show what changed when spot correction was added. The left image in 
 
 Several isolated brown spots fade around the sheet number and the right margin.
 
-| Before spot correction | Current cleanup |
+| Before spot correction | v5 cleanup |
 | --- | --- |
-| ![Near the sheet number, before spot correction](docs/images/sf6-sheet-number-before-spot-correction.webp) | ![Near the sheet number, current cleanup](docs/images/sf6-sheet-number-cleaned.webp) |
+| ![Near the sheet number, before spot correction](docs/images/sf6-sheet-number-before-spot-correction.webp) | ![Near the sheet number, v5 cleanup](docs/images/sf6-sheet-number-cleaned.webp) |
 
 ### Near the wharf
 
 Some isolated spots fade. Dark clusters along the binding edge remain.
 
-| Before spot correction | Current cleanup |
+| Before spot correction | v5 cleanup |
 | --- | --- |
-| ![Near the wharf, before spot correction](docs/images/sf6-wharf-before-spot-correction.webp) | ![Near the wharf, current cleanup](docs/images/sf6-wharf-cleaned.webp) |
+| ![Near the wharf, before spot correction](docs/images/sf6-wharf-before-spot-correction.webp) | ![Near the wharf, v5 cleanup](docs/images/sf6-wharf-cleaned.webp) |
 
 ## Evidence and current limits
+
+The v6 comparison covered 92 project scans and two additional Library of Congress scans obtained after freezing the rule. On the 92 project scans, sampled smooth-paper locations showing excess dark contrast fell from 140,273 to 53,600 relative to v5. Some local contrast still increased. The v5 and v6 images produced identical downstream segmentation labels on the 11 Columbus comparison sheets.
 
 Development records include 37 distinct successfully processed scans across earlier versions. The spot-correction experiment covered nine scans.
 

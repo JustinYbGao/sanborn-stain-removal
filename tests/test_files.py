@@ -10,7 +10,7 @@ from PIL import Image
 
 from sanborn_stain import restore_file, restore_rgb
 from sanborn_stain.paper import sha256
-from sanborn_stain.spots import VERSION
+from sanborn_stain.dark_spots import VERSION
 from tests.test_paper import drawing
 
 
@@ -42,7 +42,7 @@ class FileOutputTest(unittest.TestCase):
             self.assertEqual(metadata['source_sha256'], sha256(source))
             self.assertEqual(metadata['output_sha256'], sha256(result))
             self.assertEqual(metadata['dimensions'], [360, 260])
-            self.assertEqual(set(metadata['implementation_sha256']), {'paper', 'chroma', 'lines', 'spots'})
+            self.assertEqual(set(metadata['implementation_sha256']), {'paper', 'chroma', 'lines', 'spots', 'dark_spots', 'local_guard', 'ring_check'})
 
     def test_existing_output_directory_is_preserved(self):
         with TemporaryDirectory() as folder:
