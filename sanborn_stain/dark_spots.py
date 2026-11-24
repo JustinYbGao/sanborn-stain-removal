@@ -4,10 +4,11 @@ import cv2
 import numpy as np
 
 from . import spots
+from .texture import repair_grain
 from .local_guard import screen
 from .paper import ROW_CHUNK
 
-VERSION = 'paper-correction-with-dark-spot-repair-v6'
+VERSION = 'paper-correction-with-guarded-texture-v7'
 
 
 def _target(raw, clean):
@@ -57,6 +58,10 @@ def repair(raw, clean):
     grid = _target(raw, clean)
     if grid is None:
         return clean
+    return _apply_repair(raw, clean, grid)
+
+
+def _apply_repair(raw, clean, grid):
     guide, gain, weight = grid
     h, w = raw.shape[:2]
     gh, gw = weight.shape
@@ -91,10 +96,61 @@ def repair(raw, clean):
             old[:] = np.rint(old + alpha[:, :, None] * delta).clip(0, 255).astype(np.uint8)
     return clean
 
+def _recover_blotches(raw, cleaned):
+    """Limit additional paper lift to the center's measured correction deficit."""
+    height, width = raw.shape[:2]
+    size = (max(1, width // 5), max(1, height // 5))
+
+    def small_gray(image):
+        small = cv2.resize(image, size, interpolation=cv2.INTER_AREA)
+        return cv2.cvtColor(small, cv2.COLOR_RGB2GRAY).astype(np.float32)
+
+    def deficit(image):
+        return cv2.GaussianBlur(image, (0, 0), 7) - cv2.GaussianBlur(image, (0, 0), 1.3)
+
+    source = small_gray(raw)
+    corrected = small_gray(cleaned)
+    gap = deficit(corrected - source)
+    cap = np.maximum(0, gap - 2) * np.clip((9 - np.abs(deficit(source))) / 4, 0, 1)
+    if cap.max() < 5:
+        return cleaned
+    proposed = repair(raw, cleaned.copy())
+    coarse_delta = small_gray(proposed) - corrected
+    support = cv2.dilate((coarse_delta > 0).astype(np.uint8), np.ones((5, 5), np.uint8))
+    cap *= support
+    if not cap.any():
+        return cleaned
+    allowance = cv2.resize(cap, (width, height), interpolation=cv2.INTER_LINEAR)
+    kernel = np.ones((5, 5), np.uint8)
+    for top in range(0, height, ROW_CHUNK):
+        end = min(height, top + ROW_CHUNK)
+        rows = slice(top, end)
+        grid_top = max(0, top * size[1] // height - 1)
+        grid_end = min(size[1], (end * size[1] - 1) // height + 2)
+        if not support[grid_top:grid_end].any():
+            proposed[rows] = cleaned[rows]
+            continue
+        lo, hi = max(0, top - 2), min(height, end + 2)
+        span = cv2.morphologyEx(raw[lo:hi], cv2.MORPH_GRADIENT, kernel).max(2)[top - lo:end - lo]
+        delta = proposed[rows].astype(np.float32) - cleaned[rows]
+        luminance = cv2.cvtColor(delta, cv2.COLOR_RGB2GRAY)
+        opacity = np.clip(allowance[rows] / np.maximum(luminance, 1), 0, 1)
+        opacity *= np.clip((24 - span.astype(np.float32)) / 10, 0, 1)
+        proposed[rows] = np.rint(cleaned[rows] + opacity[:, :, None] * delta).clip(0, 255).astype(np.uint8)
+    return proposed
+
+
 def restore_rgb(rgb):
     """Apply the frozen dark-spot repair and report final RGB changes."""
     previous, changed, review, diagnostics = spots.restore_rgb(rgb)
-    result = screen(rgb, previous, repair(rgb, previous.copy()))
+    grid = _target(rgb, previous)
+    result = previous
+    if grid is not None:
+        proposed = _apply_repair(rgb, previous.copy(), grid)
+        del grid
+        result = screen(rgb, previous, proposed)
+        result = _recover_blotches(rgb, result)
+    result = repair_grain(rgb, result)
     for top in range(0, len(rgb), ROW_CHUNK):
         rows = slice(top, top + ROW_CHUNK)
         changed[rows] = np.any(result[rows] != rgb[rows], axis=2)

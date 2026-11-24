@@ -42,7 +42,7 @@ class FileOutputTest(unittest.TestCase):
             self.assertEqual(metadata['source_sha256'], sha256(source))
             self.assertEqual(metadata['output_sha256'], sha256(result))
             self.assertEqual(metadata['dimensions'], [360, 260])
-            self.assertEqual(set(metadata['implementation_sha256']), {'paper', 'chroma', 'lines', 'spots', 'dark_spots', 'local_guard', 'ring_check'})
+            self.assertEqual(set(metadata['implementation_sha256']), {'paper', 'chroma', 'lines', 'spots', 'dark_spots', 'local_guard', 'ring_check', 'texture'})
 
     def test_existing_output_directory_is_preserved(self):
         with TemporaryDirectory() as folder:

@@ -1,5 +1,5 @@
 {
-  "algorithm": "paper-correction-with-dark-spot-repair-v6",
+  "algorithm": "paper-correction-with-guarded-texture-v7",
   "algorithm_modules": [
     {
       "source": "experiments/rgb_stain_preprocess_20261110/restore.py",
@@ -33,8 +33,18 @@
       "source": "experiments/soft_blotches_c_20261123/repair.py",
       "source_sha256": "fb091c9eba8e40b236e12bf33ab9384095aa8c5725d3ec9a10d1497cc6a4cc86",
       "published_module": "sanborn_stain/dark_spots.py",
-      "published_sha256": "24f98e1ac3a1e9d08ac7ee86f7d75bb3a1d6179fcf70d964fce7e17f82634614",
-      "change": "Packaged the frozen numerical rules and added the public RGB entry point with final changed and review masks."
+      "published_sha256": "2a2590e1058076ebcfbe837fa7e8bc908f48941d1e5aeb6f23f45b6f66c28e45",
+      "change": "Includes the v6 repair, skips protection when there is no proposal, and caps a second local recovery by the measured paper correction deficit.",
+      "v7_sources": [
+        {
+          "path": "experiments/v6_replacement_20261124/blotches/automatic.py",
+          "sha256": "b3e0318001be86518664bb87121b4487ce15d68ff983a06bebefa191a69a93cb"
+        },
+        {
+          "path": "experiments/v6_replacement_20261124/speed/candidate.py",
+          "sha256": "e998e35cee9f0c72d2cd660a177c56d73294f8867cde347ce07b92ba34e85227"
+        }
+      ]
     },
     {
       "source": "experiments/soft_blotches_c_20261123/local_guard.py",
@@ -49,9 +59,24 @@
       "published_module": "sanborn_stain/ring_check.py",
       "published_sha256": "9711eeb65df75314daf831cefec5ced652ffd4db249dd79779311fa5fe4631b5",
       "change": "Formatting only."
+    },
+    {
+      "published_module": "sanborn_stain/texture.py",
+      "published_sha256": "9fdb1fb3f64f8eaa1807fc2511885b9129b7a79c5a17cc0e1ba126892629e83e",
+      "sources": [
+        {
+          "path": "experiments/v6_texture_audit_20261124/candidate.py",
+          "sha256": "1a5210ca41c4c5c6f3779840b0f12cad1f95600a94674861e975f8e5d9a4960a"
+        },
+        {
+          "path": "experiments/v6_replacement_20261124/grain/texture.py",
+          "sha256": "496037d3568bbacf3baa112712741da4fa1529ef75425468074f9f571bfb0f3c"
+        }
+      ],
+      "change": "Smooths the local correction on low-texture paper and restores weak source contrast lost during that operation."
     }
   ],
-  "packaging": "Python package 0.2.0. The API, local web server and CLI use the same v6 RGB entry point.",
+  "packaging": "Python package 0.3.0. The local web server, CLI and Python API share the v7 RGB entry point.",
   "validation_environment": {
     "python": "3.14.6",
     "numpy": "2.5.2",
@@ -89,6 +114,35 @@
     }
   },
   "reference_validation": {
+    "sheet": "Omaha-0168",
+    "algorithm": "paper-correction-with-guarded-texture-v7",
+    "native_dimensions": [
+      3299,
+      3898
+    ],
+    "source_sha256": "eed08a46cecbb6b93469649a8e77cb462f9a4f6ad11db04e028e1881e0c017f8",
+    "rgb_sha256": "c8882334f64de4c0c94de6924a43c8cf9899fae4bfb7f31121174fcfe8718a5d",
+    "cli_matches_reference": true,
+    "http_matches_reference": true,
+    "study_maps": 98,
+    "prior_gallery_maps": 94,
+    "additional_known_maps": 2,
+    "new_scans": 2,
+    "maps_with_unchanged_oversegmentation_labels": 11,
+    "experiment": "experiments/v6_replacement_20261124",
+    "full_resolution_rgb_pairs_matched": 98,
+    "changed_and_review_masks_checked_on": 98,
+    "total_pixels": 3658437580,
+    "whole_sheet_excess_dark_locations_v6_v7": [
+      56057,
+      31210
+    ],
+    "fixed_windows_excess_dark_pixels_v6_v7": [
+      519834,
+      319691
+    ]
+  },
+  "prior_v6_reference_validation": {
     "sheet": "Omaha-0166",
     "algorithm": "paper-correction-with-dark-spot-repair-v6",
     "native_dimensions": [
@@ -115,5 +169,12 @@
     },
     "full_resolution_rgb_pairs_matched": 94,
     "changed_and_review_masks_checked_on": 94
+  },
+  "fresh_install_validation": {
+    "version": "0.3.0",
+    "python": "3.12",
+    "packaged_reference_sheet": "Omaha-0168",
+    "decoded_rgb_sha256": "c8882334f64de4c0c94de6924a43c8cf9899fae4bfb7f31121174fcfe8718a5d",
+    "source_suite_tests_passed": 23
   }
 }

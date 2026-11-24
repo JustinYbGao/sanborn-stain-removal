@@ -6,7 +6,7 @@ import shutil
 
 from PIL import Image
 
-from . import chroma, dark_spots, lines, local_guard, paper, ring_check, spots
+from . import chroma, dark_spots, lines, local_guard, paper, ring_check, spots, texture
 
 
 def restore_file(source, destination):
@@ -21,7 +21,7 @@ def restore_file(source, destination):
     implementation_hashes = {
         name: paper.sha256(Path(module.__file__))
         for name, module in (('paper', paper), ('chroma', chroma), ('lines', lines), ('spots', spots),
-                             ('dark_spots', dark_spots), ('local_guard', local_guard), ('ring_check', ring_check))
+                             ('dark_spots', dark_spots), ('local_guard', local_guard), ('ring_check', ring_check), ('texture', texture))
     }
     destination.mkdir(parents=True, exist_ok=False)
     try:

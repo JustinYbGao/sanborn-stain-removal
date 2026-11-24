@@ -21,5 +21,5 @@ class DarkSpotDefaultTest(TestCase):
         np.testing.assert_array_equal(mask, np.any(result != raw, axis=2))
         self.assertFalse(remaining[300, 300])
         self.assertFalse((mask & remaining).any())
-        self.assertEqual(diagnostics['algorithm'], 'paper-correction-with-dark-spot-repair-v6')
+        self.assertEqual(diagnostics['algorithm'], 'paper-correction-with-guarded-texture-v7')
         self.assertIs(web.restore_rgb, restore_rgb)

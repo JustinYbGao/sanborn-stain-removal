@@ -1,10 +1,14 @@
 # Sanborn Stain Removal
 
-Automatic color correction for scanned Sanborn fire insurance maps. The tool reduces broad yellow-brown discoloration, warm fringes near dark lines, and small residual brown spots. Version 0.2.0 also repairs dark spots introduced when the surrounding paper receives more correction than the center.
+Automatic color correction for scanned Sanborn fire insurance maps. The tool reduces broad yellow-brown discoloration, warm fringes near dark lines, and small residual brown spots. Version 0.3.0 reduces gray halos and fine dark grain that can appear when the surrounding paper receives more correction than the center.
 
 The browser tool runs locally. Choose an image, select **Remove stains**, compare the original with the cleaned image, and download the full-resolution RGB PNG.
 
-**Atlanta, 1892 · Sheet 6 · dark-spot repair**
+**San Francisco · Sheet 9 · current gray-halo and grain repair**
+
+![San Francisco sheet 9, original scan, v6, and current v7](docs/images/sf9-v7-paper-detail.webp)
+
+**Atlanta, 1892 · Sheet 6 · archived v6 dark-spot repair**
 
 ![Atlanta sheet 6, original scan, v5 and v6](docs/images/atlanta-dark-spot-repair.webp)
 
@@ -74,7 +78,10 @@ python -m PIL
 4. Extend correction toward dark lines where nearby paper supports it and the original colors match.
 5. Find compact dark, warm residuals surrounded by similar corrected paper. Blend a local correction away from dark ink.
 6. Look for local gaps in the correction on similar paper. Extend the neighboring RGB adjustment, protect sharp ink edges, and reduce or undo edits that introduce excess bright or dark contrast.
-7. Save a full-resolution RGB PNG.
+7. On low-texture paper where a halo remains, limit further brightening to the measured local shortfall. Smooth abrupt changes in the RGB adjustment and check weak source detail against its local contrast.
+8. Save a full-resolution RGB PNG.
+
+An original dark speck can stand out more after the surrounding gray halo fades. Very faint light strokes can also lose contrast.
 
 The method was developed through inspection of map failures. The yellow correction followed residual yellowing on Sacramento. The line pass addressed fringes in San Francisco. The spot pass addressed isolated brown residues on San Francisco Sheet 6.
 
@@ -143,6 +150,8 @@ Some isolated spots fade. Dark clusters along the binding edge remain.
 | ![Near the wharf, before spot correction](docs/images/sf6-wharf-before-spot-correction.webp) | ![Near the wharf, v5 cleanup](docs/images/sf6-wharf-cleaned.webp) |
 
 ## Evidence and current limits
+
+Across 98 full scans, the number of sampled smooth-paper locations with excess dark contrast fell from 56,057 with v6 to 31,210 with v7. Within 155 fixed native-resolution crops from 94 of those sheets, the number of pixels showing excess fine dark contrast fell from 519,834 to 319,691. The other checks found some original specks became more conspicuous and a very faint synthetic light stroke weakened. On 11 Columbus sheets, building over-segmentation returned identical labels for v6 and v7.
 
 The v6 comparison covered 92 project scans and two additional Library of Congress scans obtained after freezing the rule. On the 92 project scans, sampled smooth-paper locations showing excess dark contrast fell from 140,273 to 53,600 relative to v5. Some local contrast still increased. The v5 and v6 images produced identical downstream segmentation labels on the 11 Columbus comparison sheets.
 
