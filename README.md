@@ -4,6 +4,8 @@ Automatic color correction for scanned Sanborn fire insurance maps. The tool red
 
 The browser tool runs locally. Choose an image, select **Remove stains**, compare the original with the cleaned image, and download the full-resolution RGB PNG.
 
+[View all 98 original scans alongside their v7 results](https://justinybgao.github.io/sanborn-stain-removal/v7.html)
+
 **San Francisco · Sheet 9 · current gray-halo and grain repair**
 
 ![San Francisco sheet 9, original scan, v6, and current v7](docs/images/sf9-v7-paper-detail.webp)
